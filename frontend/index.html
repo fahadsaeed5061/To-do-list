@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>Daymark — your day, in focus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Daymark home"><span class="brand-mark">d</span><span>daymark<span class="brand-dot">.</span></span></a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="navigation" aria-label="Main navigation">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon">▦</span>Overview</button>
+        <button class="nav-link" data-view="calendar"><span class="nav-icon">▣</span>Calendar</button>
+        <button class="nav-link" data-view="backups"><span class="nav-icon">⟳</span>Backups<span class="nav-count" id="backup-count">0</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="focus-card">
+          <div class="focus-icon">✳</div>
+          <strong>A little progress<br>goes a long way.</strong>
+          <span>Keep showing up for your goals.</span>
+          <div class="focus-decoration"></div>
+        </div>
+        <button class="theme-toggle" id="theme-toggle"><span class="theme-icon">◐</span><span>Switch appearance</span><span class="theme-state">Light</span></button>
+        <div class="profile"><div class="avatar">D</div><div><strong>Your workspace</strong><small>Personal plan</small></div><span class="profile-menu">···</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>Workspace</span><b>/</b><strong id="page-title">Overview</strong></div>
+        <div class="topbar-actions"><div class="today-label"><span class="status-pulse"></span><span id="today-label"></span></div><button class="avatar top-avatar" aria-label="Workspace profile">D</button></div>
+      </header>
+
+      <section class="view-section active" id="dashboard-view">
+        <div class="page-heading">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL WORKSPACE</div><h1>Make room for <span>what matters.</span></h1><p>A clear mind starts with a clear plan. Here's your day at a glance.</p></div>
+          <button class="button button-primary" id="add-task"><span class="plus">＋</span> New task</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card stat-total"><div class="stat-top"><span>Total tasks</span><span class="stat-icon">▤</span></div><div class="stat-value" id="stat-total">0</div><div class="stat-note"><span class="stat-dot blue"></span>All your to-dos</div><div class="stat-decoration"></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Completed</span><span class="stat-icon icon-green">✓</span></div><div class="stat-value" id="stat-completed">0</div><div class="stat-note"><span class="stat-dot green"></span><span id="completed-note">Making progress</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>In progress</span><span class="stat-icon icon-amber">◷</span></div><div class="stat-value" id="stat-pending">0</div><div class="stat-note"><span class="stat-dot amber"></span>Still on your list</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Overdue</span><span class="stat-icon icon-rose">↗</span></div><div class="stat-value" id="stat-overdue">0</div><div class="stat-note"><span class="stat-dot rose"></span><span id="overdue-note">Nothing behind</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Due today</span><span class="stat-icon icon-purple">✳</span></div><div class="stat-value" id="stat-today">0</div><div class="stat-note"><span class="stat-dot purple"></span>A fresh start, today</div></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel tasks-panel">
+            <div class="panel-heading task-heading">
+              <div><div class="section-kicker">YOUR PLAN</div><h2>Tasks <span class="task-total-pill" id="visible-count">0</span></h2></div>
+              <div class="task-heading-actions"><button class="button button-soft button-small" id="task-add-inline">＋ Add task</button></div>
+            </div>
+            <div class="filter-toolbar">
+              <label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Search your tasks..."></label>
+              <select id="date-filter" aria-label="Filter tasks by date">
+                <option value="all">All dates</option><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="week">This week</option><option value="month">This month</option><option value="specific">Specific date</option><option value="specific-month">Specific month</option><option value="specific-year">Specific year</option><option value="range">Custom range</option>
+              </select>
+              <select id="sort-select" aria-label="Sort tasks"><option value="date">Date</option><option value="created">Created</option><option value="status">Status</option></select>
+            </div>
+            <div class="filter-extra" id="filter-extra"></div>
+            <div class="task-list" id="task-list"><div class="loading-state"><span class="spinner"></span>Loading your tasks...</div></div>
+            <div class="list-footer"><span id="list-footer-label">Showing all tasks</span><button class="text-button" id="clear-filters">Clear filters</button></div>
+          </section>
+
+          <div class="right-column">
+            <section class="panel calendar-panel">
+              <div class="panel-heading calendar-heading"><div><div class="section-kicker">STAY ON TRACK</div><h2>Calendar</h2></div><button class="icon-button" id="open-calendar" aria-label="Open full calendar">↗</button></div>
+              <div class="mini-calendar-top"><strong id="mini-month-label"></strong><div><button class="calendar-arrow" id="mini-prev" aria-label="Previous month">‹</button><button class="calendar-arrow" id="mini-next" aria-label="Next month">›</button></div></div>
+              <div class="mini-calendar" id="mini-calendar"></div>
+              <div class="calendar-legend"><span><i></i> Tasks scheduled</span><button class="text-button" id="mini-today">Today</button></div>
+            </section>
+            <section class="panel monthly-panel">
+              <div class="panel-heading"><div><div class="section-kicker">YOUR MOMENTUM</div><h2>Monthly overview</h2></div><span class="chart-month" id="chart-month"></span></div>
+              <div class="chart-summary"><strong id="month-completed">0</strong><span>tasks completed this month</span><span class="chart-trend">↗</span></div>
+              <div class="bar-chart" id="bar-chart"></div>
+              <div class="chart-axis"><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span><span>Week 5</span></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="view-section secondary-view" id="calendar-view">
+        <div class="page-heading secondary-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> PLAN AHEAD</div><h1>Your <span>calendar.</span></h1><p>See what's coming up and make every day count.</p></div><button class="button button-primary" id="calendar-add-task"><span class="plus">＋</span> New task</button></div>
+        <section class="panel full-calendar-panel">
+          <div class="full-calendar-toolbar"><div class="calendar-month-control"><button class="calendar-arrow large-arrow" id="calendar-prev" aria-label="Previous period">‹</button><h2 id="calendar-heading"></h2><button class="calendar-arrow large-arrow" id="calendar-next" aria-label="Next period">›</button><button class="button button-soft button-small" id="calendar-today">Today</button></div><div class="calendar-view-switch" id="calendar-view-switch"><button class="selected" data-calendar-view="month">Month</button><button data-calendar-view="week">Week</button><button data-calendar-view="day">Day</button></div></div>
+          <div id="full-calendar"></div>
+          <div class="selected-day-panel"><div class="selected-day-heading"><div><div class="section-kicker">SELECTED DAY</div><h3 id="selected-day-label"></h3></div><button class="text-button" id="add-selected-date">＋ Add task</button></div><div class="selected-day-tasks" id="selected-day-tasks"></div></div>
+        </section>
+      </section>
+
+      <section class="view-section secondary-view" id="backups-view">
+        <div class="page-heading secondary-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> KEEP IT SAFE</div><h1>Your <span>backups.</span></h1><p>Your tasks are saved automatically. Create a snapshot or restore a previous one.</p></div><button class="button button-primary" id="create-backup"><span class="plus">＋</span> Create backup</button></div>
+        <section class="backup-callout"><div class="backup-callout-icon">↻</div><div><strong>Automatic protection is on</strong><p>A backup snapshot is created every day at 2:00 AM server time. Restoring a backup first saves your current tasks as a recovery point.</p></div><button class="button button-white" id="restore-trigger">↑ Restore JSON</button><input id="restore-file" type="file" accept=".json,application/json" hidden></section>
+        <section class="panel backup-history-panel"><div class="panel-heading"><div><div class="section-kicker">YOUR ARCHIVE</div><h2>Backup history <span class="task-total-pill" id="backup-total">0</span></h2></div></div><div class="backup-list" id="backup-list"><div class="loading-state"><span class="spinner"></span>Loading backups...</div></div></section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="task-modal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-top"><div><div class="section-kicker">MAKE IT HAPPEN</div><h2 id="modal-title">Create a task</h2></div><button class="icon-button close-modal" aria-label="Close dialog">×</button></div>
+      <form id="task-form">
+        <label class="form-field full-field">Task title <span class="required">*</span><input name="title" maxlength="120" placeholder="What needs to get done?" required></label>
+        <label class="form-field full-field">Description <span class="optional">(optional)</span><textarea name="description" rows="3" maxlength="2000" placeholder="Add a few details..."></textarea></label>
+        <div class="form-row"><label class="form-field">Date <span class="required">*</span><input name="date" type="date" required></label><label class="form-field">Time <span class="optional">(optional)</span><input name="time" type="time"></label></div>
+        <div class="form-row"><label class="form-field">Priority<select name="priority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></label><label class="form-field">Category<input name="category" maxlength="40" value="Personal" placeholder="e.g. Work"></label></div>
+        <div class="modal-actions"><button class="button button-soft close-modal" type="button">Cancel</button><button class="button button-primary" type="submit" id="save-task">Create task</button></div>
+      </form>
+    </section>
+  </div>
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+</body>
+</html>

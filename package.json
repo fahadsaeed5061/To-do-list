@@ -1,0 +1,26 @@
+{
+  "name": "daymark-todo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A full-stack task planner with MongoDB persistence and JSON backups",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "check": "node --check backend/server.js && node --check backend/app.js && node --check backend/routes/taskRoutes.js && node --check backend/routes/backupRoutes.js && node --check backend/controllers/taskController.js && node --check backend/controllers/backupController.js && node --check backend/models/Task.js && node --check backend/models/Backup.js && node --check backend/services/backupService.js && node --check frontend/app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.9.5",
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
